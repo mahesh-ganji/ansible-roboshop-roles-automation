@@ -1,0 +1,17 @@
+
+  - name: Enable and install nginx 
+    ansible.builtin.import_role:
+      name: common 
+      tasks_from: nginx_install.yaml
+  
+  - name: download nginx app code 
+    ansible.builtin.import_role:
+      name: common 
+      tasks_from: nginx_app_code.yaml
+
+  - name: Copy nginx.conf
+    ansible.builtin.template: 
+       src: nginx.conf.j2
+       dest: /etc/nginx/nginx.conf
+    notify: Start and Enable nginx
+  

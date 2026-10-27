@@ -1,0 +1,26 @@
+     - name: Install Python 
+       ansible.builtin.import_role:
+         name: common 
+         tasks_from: python_install.yaml
+         
+     - name: Create roboshop user 
+       ansible.builtin.import_role:
+        name: common 
+        tasks_from: roboshop_user.yaml
+     
+     - name: delete and get the {{ component }} code 
+       ansible.builtin.import_role: 
+        name: common 
+        tasks_from: app_code.yaml
+
+     - name: Install specified python requirements
+       ansible.builtin.pip:
+          requirements: requirements.txt
+          executable: pip3
+       args:   
+          chdir: /app
+
+     - name: reload and start {{ component }} service 
+       ansible.builtin.import_role: 
+         name: common 
+         tasks_from: systemd_service.yaml

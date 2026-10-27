@@ -1,0 +1,75 @@
+---
+- name: create ec2 instance for roboshop project
+  hosts: local
+  connection: local
+  vars:
+    image_id: ami-0055977a6e828a4f4
+    instance_type: t2.micro
+    sg_id: sg-020b6d9853c171a73
+    snet_id: subnet-06a0137ee419d9703
+    env: dev
+    domain: daws88s.shop
+    instance_state: create
+    instances:
+    - mongodb
+  tasks:
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}-{{ env }}"
+      image_id: "{{ image_id }}"
+      instance_type: "{{ instance_type }}"
+      security_group: "{{ sg_id }}"
+      subnet_id: "{{ snet_id }}"
+    loop: "{{ instances }}"
+    register: ec2_output
+    when: instance_state == "create"
+
+  - name: get ec2_output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output }}"
+
+  - name: create ec2 record in route53
+    amazon.aws.route53:
+      state: present
+      zone: "{{ domain }}"
+      record: "{{ item.instances[0].tags.Name }}.{{ domain }}"
+      type: A
+      ttl: 1
+      overwrite: true
+      value: "{{ item.instances[0].private_ip_address }}"
+    loop: "{{ ec2_output.results }}"
+    when: instance_state == "create"
+
+  - name: create frontend ec2 record in route53
+    amazon.aws.route53:
+      state: present
+      zone: "{{ domain }}"
+      record: "roboshop.{{ domain }}"
+      type: A
+      ttl: 1
+      overwrite: true
+      value: "{{ item.instances[0].public_ip_address }}"
+    loop: "{{ ec2_output.results }}"
+    when: 
+        - instance_state == "create"
+        - item.item == "frontend"
+       
+
+
+  - name: Delete ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}-{{ env }}"
+      filters: 
+         "tag:Name": "{{ item }}-{{ env }}"
+      state: absent
+    loop: "{{ instances }}"
+    when: instance_state == "delete"
+
+  - name: Delete aws route53 record
+    amazon.aws.route53:
+      record: "{{ item }}-{{ env }}.{{ domain }}"
+      zone: "{{ domain }}"
+      state: absent
+      type: A
+    loop: "{{ instances }}"
+    when: instance_state == "delete"

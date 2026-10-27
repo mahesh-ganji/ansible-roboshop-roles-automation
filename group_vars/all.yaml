@@ -1,0 +1,17 @@
+
+ansible_user: ec2-user
+ansible_password: DevOps321
+MONGODB_HOST: mongodb-dev.daws88s.shop
+PAYMENT_HOST: payment-dev.daws88s.shop 
+MYSQL_HOST: mysql-dev.daws88s.shop
+CATALOGUE_HOST: catalogue-dev.daws88s.shop
+FRONTEND_HOST: frontend-dev.daws88s.shop
+REDIS_HOST: redis-dev.daws88s.shop
+RABBITMQ_HOST: rabbitmq-dev.daws88s.shop
+SHIPPING_HOST: shipping-dev.daws88s.shop
+USER_HOST: user-dev.daws88s.shop
+CART_HOST: cart-dev.daws88s.shop
+mysql_user: root
+# mysql_password: RoboShop@1
+mysql_password: "{{ (lookup('amazon.aws.aws_secret','/roboshop/dev/mysql_password',region='us-east-1') | from_json).mysql_password }}"
+sql_hostname: mysql-dev.daws88s.shop

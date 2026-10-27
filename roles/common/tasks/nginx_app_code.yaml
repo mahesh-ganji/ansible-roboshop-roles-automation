@@ -1,0 +1,20 @@
+  - name: Remove default file
+    ansible.builtin.file:
+        path: /usr/share/nginx/html/*
+        state: absent
+  
+  - name: Delete application code in temp directory 
+    ansible.builtin.file:
+     name: /tmp/{{ component }}.zip
+     state: absent
+
+  - name: download application code
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
+      dest: /tmp/{{ component }}.zip
+
+  - name: unarchive {{ component }} zip file
+    ansible.builtin.unarchive:
+      src: /tmp/{{ component }}.zip
+      dest: /usr/share/nginx/html
+      remote_src: yes

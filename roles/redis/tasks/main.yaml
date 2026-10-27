@@ -1,0 +1,25 @@
+  - name: Enable redis:7
+    ansible.builtin.command: dnf module enable redis:7 -y
+
+  - name: Install Redis
+    ansible.builtin.dnf:
+      name: redis
+      state: present
+
+  - name: 127.0.0.1 to 0.0.0.0 in /etc/redis/redis.conf
+    ansible.builtin.replace:
+      path: /etc/redis/redis.conf
+      regexp: '127.0.0.1'
+      replace: '0.0.0.0'
+
+  - name: protected-mode from yes to no in /etc/redis/redis.conf
+    ansible.builtin.lineinfile:
+      path: /etc/redis/redis.conf
+      regexp: '^protected'
+      line: 'protected-mode no'
+
+  - name: Start and Enable Redis Service
+    ansible.builtin.service:
+      name: redis
+      enabled: yes
+      state: restarted

@@ -1,0 +1,22 @@
+
+  - name: Copy mongo.repo file to /etc/yum.repos.d/mongo.repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d
+
+  - name: Install mongodb
+    ansible.builtin.dnf:
+      name: mongodb-org
+      state: present
+
+  - name: Replace 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf
+    ansible.builtin.replace:
+      path: /etc/mongod.conf
+      regexp: '127.0.0.1'
+      replace: '0.0.0.0'
+
+  - name: Enable and Start MongoDB
+    ansible.builtin.service:
+      name: mongod
+      enabled: yes
+      state: started

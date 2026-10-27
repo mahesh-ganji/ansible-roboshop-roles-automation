@@ -1,0 +1,28 @@
+
+  - name: Enable and install nodejs 
+    tags: 
+      - deployment
+    ansible.builtin.import_role: 
+      name: common 
+      tasks_from: nodejs_install.yaml
+       
+  - name: Create roboshop user 
+    ansible.builtin.import_role:
+       name: common 
+       tasks_from: roboshop_user.yaml
+
+  - name: delete and get the {{ component }} code 
+    ansible.builtin.import_role: 
+      name: common 
+      tasks_from: app_code.yaml
+  
+  - name: Install npm
+    community.general.npm:
+      path: /app
+      state: latest
+
+  - name: reload and start {{ component }} service 
+    ansible.builtin.import_role: 
+      name: common 
+      tasks_from: systemd_service.yaml
+  
