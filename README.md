@@ -9,3 +9,6 @@ Use below ansible command to deploy mulitple ec2 instances
 ==============================================================================
 
 ansible-playbook -i inventory.ini roboshop.yaml -e 'instances=["mongodb","redis","mysql","rabbitmq","catalogue","user","cart","shipping","payment","frontend"]'
+
+To deploy each component of the Roboshop application use below command
+===========================================================================
