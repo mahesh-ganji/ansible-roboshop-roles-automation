@@ -12,3 +12,5 @@ ansible-playbook -i inventory.ini roboshop.yaml -e 'instances=["mongodb","redis"
 
 To deploy each component of the Roboshop application use below command
 ===========================================================================
+
+ansible-playbook -i inventory.ini components.yaml -e component=mongodb 
