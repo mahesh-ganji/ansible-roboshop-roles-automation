@@ -13,5 +13,6 @@ USER_HOST: user-dev.daws88s.shop
 CART_HOST: cart-dev.daws88s.shop
 mysql_user: root
 # mysql_password: RoboShop@1
+#mysql_password: "{{ lookup('amazon.aws.aws_ssm','/roboshop/dev/mysql_password',region='us-east-1',decrypt=True ) }}"
 mysql_password: "{{ (lookup('amazon.aws.aws_secret','/roboshop/dev/mysql_password',region='us-east-1') | from_json).mysql_password }}"
 sql_hostname: mysql-dev.daws88s.shop
