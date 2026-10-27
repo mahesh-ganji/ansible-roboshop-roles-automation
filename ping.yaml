@@ -1,8 +1,0 @@
----
-- name: test the ping module 
-  hosts: frontend 
-  become: yes
-  tasks:
-    - name: test ping connectivity
-      ansible.builtin.ping: 
-       data: pong
