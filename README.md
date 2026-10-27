@@ -18,7 +18,8 @@ ansible-playbook -i inventory.ini components.yaml -e component=mongodb
 Roboshop Roles Directory Structure
 ============================================================
 
-| Yaml File | 	Content |
+| Directory | Description |
+|-----------|-------------|
 roboshop.yaml	To deploy the ec2 instances or delete the ec2 instances
 mongodb.yaml	To deploy the mongodb database
 redis.yaml	To deploy the redis database
