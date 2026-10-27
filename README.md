@@ -20,4 +20,11 @@ Roboshop Roles Directory Structure
 
 | Directory | Description |
 |-----------|-------------|
-| tasks/    |  Contains automation tasks
+| tasks/    |  Contains automation tasks    |
+| meta/     |  It manages role dependencies |
+| templates |  Contains Jinja2 template to generate dynamic configuration files |
+| files     |  Contains static configuration files such as service configuration and repository files
+| vars      |  role specific variables |
+| handlers  |  Used for daemon reload and restarting the service |
+| common    |  Contains reusable tasks across the roboshop components |
+| group_vars | Contains common variables and sensitive information such as password using (AWS SSM /Secrets Manager) |
