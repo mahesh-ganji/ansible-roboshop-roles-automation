@@ -20,4 +20,4 @@ Roboshop Roles Directory Structure
 
 | Directory | Description |
 |-----------|-------------|
- tasks        Contains automation tasks
+| tasks/    |  Contains automation tasks
